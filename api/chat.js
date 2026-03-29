@@ -4,10 +4,18 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Debug: log exactly what we receive
+    console.log('req.body:', JSON.stringify(req.body))
+    console.log('Content-Type:', req.headers['content-type'])
+
     const { question } = req.body
 
     if (!question) {
-      return res.status(400).json({ error: 'No question provided' })
+      return res.status(400).json({ 
+        error: 'No question provided',
+        received: req.body,
+        contentType: req.headers['content-type']
+      })
     }
 
     const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
